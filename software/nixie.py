@@ -8,6 +8,14 @@ class nixie:
 		ser.write("NIX,SCAN\r\n")
 		dat = ser.readline()
 		print dat
+	def on(self):
+		ser.write("NIX,"+str('%03d' %self.address)+",ON\r\n")
+		dat = ser.readline()
+		print dat
+	def off(self):
+		ser.write("NIX,"+str('%03d' %self.address)+",OFF\r\n")
+		dat = ser.readline()
+		print dat
 	def status(self):
 		ser.write("NIX,"+str('%03d' %self.address)+",STATUS\r\n")
 		dat = ser.readline()

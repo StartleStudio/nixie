@@ -8,11 +8,17 @@ String expression5 = "CHGADDR";
 String expression6 = "SETPOS";
 String expression7 = "GETPOS";
 String expression8 = "SCAN";
+String on = "ON";
+String off = "OFF";
 int position_var = 0;
 
 void setup() {
   Serial.begin(9600);
-
+  pinMode(2,OUTPUT);//A
+  pinMode(3,OUTPUT);//B
+  pinMode(4,OUTPUT);//C
+  pinMode(5,OUTPUT);//D
+  pinMode(6,OUTPUT);//HV
 }
 
 void loop() {
@@ -41,9 +47,26 @@ void loop() {
         else if (theCode.substring(8, 14) == expression6) {
           position_var = theCode.substring(15, 17).toInt();
           Serial.println(String(eepromvalue) + ",OK");
+          //setting position
+          bool D = position_var / 8 ;
+          bool C = (position_var/4) % 2;
+          bool B = (position_var/2) % 2;
+          bool A = position_var % 2;
+          digitalWrite(2,A);//A
+          digitalWrite(3,B);//B
+          digitalWrite(4,C);//C
+          digitalWrite(5,D);//D
         }
         else if (theCode.substring(8, 14) == expression7) {
           Serial.println(String(position_var));
+        }
+        else if (theCode.substring(8,11) == off)  {
+          Serial.println(String(eepromvalue)+",OFF");
+          digitalWrite(6, 0);//HV
+        }
+        else if (theCode.substring(8,10) == on) {
+          Serial.println(String(eepromvalue)+",ON"); 
+          digitalWrite(6, 1);//HV 
         }
       }
       else if (theCode.substring(4, 8) == expression8) {
